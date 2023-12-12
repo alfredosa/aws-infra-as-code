@@ -17,3 +17,7 @@ output "iac_agent_security_group" {
 output "iac_agent_cluster_name" {
   value = aws_ecs_cluster.iac_agent_cluster.name
 }
+
+output "load_balancer_dns_name" {
+  value = aws_lb.metabase.dns_name
+}

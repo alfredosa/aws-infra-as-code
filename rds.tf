@@ -9,33 +9,15 @@ resource "aws_db_subnet_group" "private_subnet_group" {
 
 resource "aws_security_group" "rds_sg" {
   name        = "rds_sg"
-  description = "Allow inbound traffic from public subnets"
+  description = "Allow inbound traffic from ECS tasks"
   vpc_id      = aws_vpc.iac-vpc.id
 
   ingress {
-    from_port   = 3000
-    to_port     = 3000
+    from_port   = 5432
+    to_port     = 5432
     protocol    = "tcp"
-    cidr_blocks = [aws_subnet.public-subnet-1.cidr_block, aws_subnet.public-subnet-2.cidr_block]
+    security_groups = [aws_security_group.iac_agent.id]
   }
-
-  ingress {
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = [aws_subnet.public-subnet-1.cidr_block, aws_subnet.public-subnet-2.cidr_block]
-  }
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-resource "aws_kms_key" "rds_key" {
-
 }
 
 resource "aws_db_instance" "postgres" {
@@ -46,7 +28,7 @@ resource "aws_db_instance" "postgres" {
   instance_class       = "db.t3.micro"
   db_name              = var.db_name
   username             = var.db_username
-  password             = "foobarbaz"
+  password             = var.db_password
 #   manage_master_user_password = true
   parameter_group_name = "default.postgres14"
   db_subnet_group_name = aws_db_subnet_group.private_subnet_group.name

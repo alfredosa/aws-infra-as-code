@@ -39,7 +39,7 @@ variable "db_username" {
 
 variable "db_password" {
     description = "The password for the database."
-    default = "master_iac123"
+    default = "foobarbaz"
 }
 
 ### ECR Repository
@@ -55,7 +55,13 @@ variable "availability_zones" {
 }
 variable "metabase_cpu" {
   description = "CPU units to allocate to the agent"
-  default     = 1024
+  default     = 2048
+  type        = number
+}
+
+variable "metabase_memory" {
+  description = "Memory units to allocate to the agent"
+  default     = 4096
   type        = number
 }
 
@@ -71,11 +77,6 @@ variable "agent_log_retention_in_days" {
   type        = number
 }
 
-variable "metabase_memory" {
-  description = "Memory units to allocate to the agent"
-  default     = 2048
-  type        = number
-}
 
 variable "agent_queue_name" {
   description = "iac queue that the agent should listen to"
@@ -91,29 +92,13 @@ variable "metabase_task_role_arn" {
 }
 
 variable "name" {
-  description = "Unique name for this agent deployment"
-  default = "iac-ecs"
+  description = "Unique name for this IaC deployment"
+  default = "waggys-iac"
   type        = string
 }
 
-variable "iac_account_id" {
-  description = "iac cloud account ID"
-  default = "accountID-REPLACEME"
-  type        = string
-}
 
-variable "iac_workspace_id" {
-  description = "iac cloud workspace ID"
-  default = "workspace-id-REPLACEME"
-  type        = string
-}
 
-variable "iac_api_key_pnu" {
-  description = "iac cloud API key"
-  type        = string
-  default = "********-REPLACEME"
-  sensitive   = true
-}
 # networking
 variable "public_subnet_1_cidr" {
   description = "CIDR Block for Public Subnet 1"
