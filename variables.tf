@@ -28,20 +28,3 @@ variable "db_password" {
   description = "The password for the database."
   default     = "foobarbaz"
 }
-
-### ECR Repository
-variable "iac-ecr" {
-  description = "ECR Repository name"
-  default     = "iac-ecr"
-}
-
-# variable "availability_zones" {
-#   description = "Availability zones"
-#   type        = list(string)
-#   default     = ["eu-west-2b", "eu-west-2c"]
-# }
-variable "metabase_cpu" {
-  description = "CPU units to allocate to the agent"
-  default     = 2048
-  type        = number
-}
