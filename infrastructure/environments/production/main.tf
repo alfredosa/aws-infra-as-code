@@ -21,3 +21,10 @@ module "ses" {
     domain = var.domain
     environment = "production"
 }
+
+module "ecr" {
+    source = "../../modules/ecr"
+    
+    environment = "production"
+    org_name = var.organization_name
+}

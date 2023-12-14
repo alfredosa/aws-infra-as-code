@@ -18,3 +18,8 @@ variable "environment" {
   default     = "staging"
   
 }
+
+variable "base_cidr_block_list" {
+  description = "The base CIDR block to use for the VPC."
+  default     = ["0.0.0.0/0"]
+}

@@ -11,7 +11,7 @@ resource "aws_security_group" "lb_sg" {
       from_port   = 3000
       to_port     = 3000
       protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = var.base_cidr_block_list
       description = "Required Port for Metabase"
       ipv6_cidr_blocks = []
       prefix_list_ids = []
@@ -22,7 +22,7 @@ resource "aws_security_group" "lb_sg" {
       from_port   = 80
       to_port     = 80
       protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = var.base_cidr_block_list
       description = "Required port for PGAdmin"
       ipv6_cidr_blocks = []
       prefix_list_ids = []
@@ -33,7 +33,7 @@ resource "aws_security_group" "lb_sg" {
       from_port   = 443
       to_port     = 443
       protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = var.base_cidr_block_list
       description = "Required port for HTTPS"
       ipv6_cidr_blocks = []
       prefix_list_ids = []
@@ -47,7 +47,7 @@ resource "aws_security_group" "lb_sg" {
       from_port   = 0
       to_port     = 0
       protocol    = "-1"
-      cidr_blocks = ["0.0.0.0/0"]
+      cidr_blocks = var.base_cidr_block_list
       description = "Allow all outgoing traffic"
       ipv6_cidr_blocks = []
       prefix_list_ids = []
