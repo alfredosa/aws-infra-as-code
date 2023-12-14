@@ -28,3 +28,10 @@ module "ecr" {
     environment = "production"
     org_name = var.organization_name
 }
+
+module "cloudwatch_group" {
+    source = "../../modules/cloudwatch_group"
+    
+    environment = "production"
+}
+
