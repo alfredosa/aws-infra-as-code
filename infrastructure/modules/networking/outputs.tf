@@ -56,3 +56,6 @@ output "nat_gateway_subnet_id" {
   value = aws_nat_gateway.nat-gw.subnet_id
 }
 
+output "private_subnet_group_name" {
+  value = aws_db_subnet_group.private_subnet_group.name
+}

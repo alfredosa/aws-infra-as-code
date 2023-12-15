@@ -13,7 +13,3 @@ variable "metabase_task_role_arn" {
   default     = null
   type        = string
 }
-
-variable "ecs_cluster_name" {
-  default = "${var.org_name}-${var.environment}"
-}

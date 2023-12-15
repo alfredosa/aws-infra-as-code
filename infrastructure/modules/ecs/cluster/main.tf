@@ -116,7 +116,7 @@ resource "aws_security_group" "ecs_agent" {
 }
 
 resource "aws_ecs_cluster" "ecs_agent_cluster" {
-  name = "${var.environment}"
+  name = "${var.org_name}-${var.environment}"
 }
 
 resource "aws_ecs_cluster_capacity_providers" "ecs_agent_cluster_capacity_providers" {

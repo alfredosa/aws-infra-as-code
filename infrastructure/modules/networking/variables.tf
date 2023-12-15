@@ -3,6 +3,10 @@ variable "environment" {
   default     = "staging"
 }
 
+variable "organization_name" {
+  description = "The name of the organisation."
+}
+
 variable "base_cidr_block" {
   description = "The base CIDR block to use for the VPC."
   default     = "10.0.0.0/16"

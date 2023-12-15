@@ -77,3 +77,12 @@ resource "aws_route" "public-internet-igw-route" {
   gateway_id             = aws_internet_gateway.igw.id
   destination_cidr_block = "0.0.0.0/0"
 }
+
+resource "aws_db_subnet_group" "private_subnet_group" {
+  name       = "private-subnet-group-${var.environment}"
+  subnet_ids = [aws_subnet.private-subnet-1.id, aws_subnet.private-subnet-2.id]
+
+  tags = {
+    Name = "${var.organization_name}-${var.environment}"
+  }
+}
