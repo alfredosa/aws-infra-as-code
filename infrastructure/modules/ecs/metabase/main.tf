@@ -1,5 +1,98 @@
+resource "aws_iam_role" "ecs_agent_execution_role" {
+  name = "execution-role-metabase-${var.environment}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+      },
+    ]
+  })
+
+  inline_policy {
+    name = "ssm-allow-read-ecs-api-key-metabase-${var.environment}"
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action = [
+        "ssm:GetParameter*",
+        "ssm:GetParameters",
+        "ssm:GetParameter",
+        "ssm:GetParametersByPath",
+        "secretsmanager:GetSecretValue"
+      ],
+          Effect = "Allow"
+          Resource = ["arn:aws:ssm:eu-west-2:197578819129:parameter/*"]
+        },
+        {
+            Effect: "Allow",
+            Action: [
+                "kms:Decrypt"
+            ],
+            Resource: "arn:aws:kms:eu-west-2:197578819129:key/0a7e7860-111f-4226-9f37-7fc0de7faab2"
+        }
+      ]
+    })
+  }
+  // AmazonECSTaskExecutionRolePolicy is an AWS managed role for creating ECS tasks and services
+  managed_policy_arns = ["arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy"]
+}
+
+resource "aws_iam_role" "ecs_task_role" {
+  name  = "task-role-metabase-${var.environment}"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ecs-tasks.amazonaws.com"
+        }
+      },
+    ]
+  })
+
+  inline_policy {
+    name = "allow-ecs-task-${var.environment}"
+    policy = jsonencode({
+      Version = "2012-10-17"
+      Statement = [
+        {
+          Action = [
+            "ec2:DescribeSubnets",
+            "ec2:DescribeVpcs",
+            "ecr:BatchCheckLayerAvailability",
+            "ecr:BatchGetImage",
+            "ecr:GetAuthorizationToken",
+            "ecr:GetDownloadUrlForLayer",
+            "ecs:DeregisterTaskDefinition",
+            "ecs:DescribeTasks",
+            "ecs:RegisterTaskDefinition",
+            "ecs:RunTask",
+            "iam:PassRole",
+            "logs:CreateLogGroup",
+            "logs:CreateLogStream",
+            "logs:GetLogEvents",
+            "logs:PutLogEvents"
+          ]
+          Effect   = "Allow"
+          Resource = "*"
+        }
+      ]
+    })
+  }
+}
+
 resource "aws_ecs_task_definition" "iac_metabase_task_definition" {
-  family = "${var.org_name}-${var.environment}"
+  family = "metabase-${var.org_name}-${var.environment}"
   cpu    = var.metabase_cpu
   memory = var.metabase_memory
 
@@ -48,7 +141,7 @@ resource "aws_ecs_task_definition" "iac_metabase_task_definition" {
       logConfiguration = {
         logDriver = "awslogs"
         options = {
-          awslogs-group         = var.cloutwatch_group_name
+          awslogs-group         = var.cloudwatch_group_name
           awslogs-region        = var.region
           awslogs-stream-prefix = "metabase-${var.org_name}-${var.environment}"
         }
@@ -56,18 +149,18 @@ resource "aws_ecs_task_definition" "iac_metabase_task_definition" {
     }
   ])
 
-  execution_role_arn = var.cluster_execution_role_arn
-  task_role_arn = var.metabase_task_role_arn == null ? var.task_role_arn : var.metabase_task_role_arn
+  execution_role_arn = aws_iam_role.ecs_agent_execution_role.arn
+  task_role_arn      = aws_iam_role.ecs_task_role.arn
 }
 
 resource "aws_ecs_service" "metabase_service" {
-  name          = "${var.org_name}-${var.environment}"
+  name          = "metabase-${var.org_name}-${var.environment}"
   cluster       = var.ecs_cluster_id
   desired_count = 1
   launch_type   = "FARGATE"
-
+  
   load_balancer {
-    target_group_arn = var.load_balancer_arn
+    target_group_arn = var.load_balancer_target_group_arn
     container_name   = "metabase-${var.org_name}-${var.environment}"
     container_port   = 3000
   }

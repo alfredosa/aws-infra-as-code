@@ -69,7 +69,6 @@ resource "aws_lb_listener" "metabase" {
   load_balancer_arn = aws_lb.load_balancer.arn
   port              = "3000"
   protocol          = "HTTP"
-  depends_on = [ aws_lb.metabase ]
 
   default_action {
     type             = "forward"

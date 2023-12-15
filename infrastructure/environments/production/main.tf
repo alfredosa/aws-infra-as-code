@@ -41,6 +41,8 @@ module "ecs_cluster" {
 
   environment = "production"
   org_name = var.organization_name
+  vpc_id = module.networking.vpc_id
+  load_balancer_security_group_ids = module.load_balancer.load_balancer_security_group_ids
 }
 
 module "rds_postgres_db_metabase" {
@@ -67,15 +69,15 @@ module "metabase_ecs_service" {
   db_password = var.db_password
   db_host = module.rds_postgres_db_metabase.db_host
   region = var.region
-  metabase_task_role_arn = null
-  cloutwatch_group_name = module.cloudwatch_group.name
-  ecs_cluster_id = module.ecs_cluster.id
-  load_balancer_arn = module.load_balancer.arn
+  cloudwatch_group_name = module.cloudwatch_group.cloudwatch_group_name
+  ecs_cluster_id = module.ecs_cluster.cluster_id
+  
+  // need to move to metabase
+  load_balancer_target_group_arn = module.load_balancer.metabase_lb_target_group_arn 
+  
   public_subnet_ids = [module.networking.public_subnet_1_id, module.networking.public_subnet_2_id]
   cluster_security_group_id = module.ecs_cluster.cluster_security_group_id
-  cluster_execution_role_arn = module.ecs_cluster.cluster_execution_role_arn
-  task_role_arn = module.ecs_cluster.task_role_arn
-  
+  org_name = var.organization_name
 }
 
 module "s3_data_lake" {

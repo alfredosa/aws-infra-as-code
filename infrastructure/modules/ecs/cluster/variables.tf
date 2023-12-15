@@ -8,8 +8,13 @@ variable "org_name" {
   default     = "iac"
 }
 
-variable "metabase_task_role_arn" {
-  description = "Optional task role ARN to pass to the agent. If not defined, a task role will be created"
-  default     = null
+
+variable "vpc_id" {
+  description = "The VPC ID to deploy to."
   type        = string
+}
+
+variable "load_balancer_security_group_ids" {
+  description = "The security group ID of the load balancer."
+  type        = list(string)
 }
