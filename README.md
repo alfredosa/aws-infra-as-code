@@ -23,42 +23,15 @@ graph TD
     K -- dataLake --> L[S3 Bucket for Data Lake]
 ```
 
-
-> **1. ECS Cluster**
-> Create an ECS cluster that will serve as the foundation for deploying containerized applications.
-
-> **2. ECS Service with Metabase**
-> Set up an ECS service running Metabase, a business intelligence and analytics tool, within the created cluster.
-
-> **3. ECS Service with PGAdmin**
-> Deploy an ECS service running PGAdmin, a web-based PostgreSQL administration tool, within the ECS cluster.
-
-> **4. RDS Postgres for Metabase**
-> Provision an RDS (Relational Database Service) instance running PostgreSQL, specifically configured to work seamlessly with the Metabase service.
-
-> **5. ALB for Metabase**
-> Create an Application Load Balancer (ALB) to distribute incoming traffic among multiple instances of the Metabase service, ensuring high availability and scalability.
-
-> **6. ALB for PGAdmin**
-> Set up a separate Application Load Balancer for PGAdmin to efficiently manage and distribute traffic to instances of the PGAdmin service.
-
-> **7. Security Groups for Metabase and PGAdmin**
-> Define AWS Security Groups to control inbound and outbound traffic for both the Metabase and PGAdmin services, enhancing network security.
-
-> **8. IAM Roles for Metabase and PGAdmin**
-> Establish AWS Identity and Access Management (IAM) roles for the Metabase and PGAdmin services, ensuring secure and fine-grained access to AWS resources.
-
-> **9. IAM Policies for Metabase and PGAdmin**
-> Define IAM policies to specify the permissions required by the Metabase and PGAdmin services, adhering to the principle of least privilege.
-
-> **10. MWAA Environment**
-> Provision an Amazon Managed Workflows for Apache Airflow (MWAA) environment, providing a scalable and serverless platform for orchestrating workflows.
-
-> **11. S3 Bucket for MWAA**
-> Create an S3 bucket to store artifacts, logs, and other data associated with the MWAA environment, facilitating seamless workflow execution.
-
-> **12. S3 Bucket for Data Lake**
-> Establish an S3 bucket to serve as a centralized data lake, allowing for secure storage and efficient management of diverse datasets.
+> - Set up an ECS cluster for containerized apps.
+> - Deploy Metabase and PGAdmin services on the ECS cluster.
+> - Provision an RDS instance for Metabase.
+> - Create ALBs for Metabase and PGAdmin.
+> - Define security groups for both services.
+> - Establish IAM roles and policies for Metabase and PGAdmin.
+> - Provision an MWAA environment for workflow orchestration.
+> - Create an S3 bucket for MWAA artifacts and logs.
+> - Establish a centralized data lake using an S3 bucket.
 
 ## How to Use
 
