@@ -3,17 +3,22 @@
 This repository contains Infrastructure as Code (IaC) to provision the following components on AWS:
 
 ```mermaid
-graph LR
+graph TD
     A[ECS Cluster] --> B[ECS Service with Metabase]
     A --> C[ECS Service with PGAdmin]
     B --> E[Metabase Load Balancer]
     C --> F[PGAdmin Load Balancer]
     D[RDS Postgres for Metabase] --> B
     D --> C
-    AA[security] --> G[Security Groups for Metabase and PGAdmin]
-    G -- iam --> H[IAM Roles for Metabase and PGAdmin]
-    H -- policies --> I[IAM Policies for Metabase and PGAdmin]
-    I -- mwaa --> J[MWAA Environment]
+    
+    AA[security] --> G[Security Groups for ECS and Services]
+    G -- iam --> H[IAM Roles for ECS and Services]
+    H -- policies --> I[IAM Policies for ECS and Services]
+   
+    I --> A
+    I --> D 
+   
+    J[MWAA Environment]
     J -- s3 --> K[S3 Bucket for MWAA]
     K -- dataLake --> L[S3 Bucket for Data Lake]
 ```
