@@ -6,10 +6,11 @@ This repository contains Infrastructure as Code (IaC) to provision the following
 graph LR
     A[ECS Cluster] --> B[ECS Service with Metabase]
     A --> C[ECS Service with PGAdmin]
-    B --> D[RDS Postgres for Metabase]
     B --> E[ALB for Metabase]
     C --> F[ALB for PGAdmin]
-    A -- security --> G[Security Groups for Metabase and PGAdmin]
+    D[RDS Postgres for Metabase] --> B
+    D --> C
+    AA[security] --> G[Security Groups for Metabase and PGAdmin]
     G -- iam --> H[IAM Roles for Metabase and PGAdmin]
     H -- policies --> I[IAM Policies for Metabase and PGAdmin]
     I -- mwaa --> J[MWAA Environment]
