@@ -1,5 +1,9 @@
 # Infrastructure as Code Repository
 
+> [!WARNING]
+> This project is now officially migrated to https://git.alfie.news/aws-infra-as-code
+> I will likely delete this sometime.
+
 This repository contains Infrastructure as Code (IaC) to provision the following components on AWS:
 
 ```mermaid
